@@ -1,4 +1,4 @@
-import { dbConnect } from "@/lib/dbConnection";
+import { dbConnect } from "@/lib/dbConnect";
 import { User, Product, Order, OrderItem, Recommendation } from "@/model/User";
 
 // Handle GET requests

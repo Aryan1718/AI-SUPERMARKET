@@ -1,30 +1,32 @@
 'use client';
 
+import CartButton from './CartButton';
+
 const NewItemsSection = () => {
   const newItems = [
     {
       id: 1,
-      name: "Organic Quinoa Bowl",
-      price: "$8.99",
-      image: "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=800&auto=format&fit=crop&q=60",
-      category: "Prepared Foods",
-      description: "Fresh and healthy quinoa bowl with vegetables"
+      name: "Organic Avocados",
+      price: "$3.99",
+      image: "https://images.unsplash.com/photo-1581674210509-d6b7acdea3e6?w=800&auto=format&fit=crop&q=60",
+      category: "Produce",
+      description: "Fresh organic avocados from California"
     },
     {
       id: 2,
-      name: "Artisan Sourdough",
-      price: "$6.99",
-      image: "https://images.unsplash.com/photo-1534620808146-d33bb39128b2?w=800&auto=format&fit=crop&q=60",
-      category: "Bakery",
-      description: "Freshly baked artisan sourdough bread"
+      name: "Almond Milk",
+      price: "$4.49",
+      image: "https://images.unsplash.com/photo-1550583724-b2692b85b150?w=800&auto=format&fit=crop&q=60",
+      category: "Dairy",
+      description: "Creamy almond milk, perfect for smoothies"
     },
     {
       id: 3,
-      name: "Seasonal Fruit Basket",
-      price: "$24.99",
-      image: "https://images.unsplash.com/photo-1619566636858-adf3ef46400b?w=800&auto=format&fit=crop&q=60",
-      category: "Produce",
-      description: "Assorted seasonal fruits"
+      name: "Quinoa",
+      price: "$5.99",
+      image: "https://images.unsplash.com/photo-1512058564366-18510be2db19?w=800&auto=format&fit=crop&q=60",
+      category: "Grains",
+      description: "High-protein ancient grain"
     }
   ];
 
@@ -51,9 +53,17 @@ const NewItemsSection = () => {
                 <p className="mt-2 text-gray-600">{item.description}</p>
                 <div className="mt-4 flex items-center justify-between">
                   <span className="text-lg font-bold text-gray-900">{item.price}</span>
-                  <button className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors">
-                    Add to Cart
-                  </button>
+                  <CartButton product={{
+                    _id: item.id,
+                    name: item.name,
+                    price: parseFloat(item.price.replace('$', '')),
+                    image: item.image,
+                    category: item.category,
+                    unit: 'piece',
+                    discount: 0,
+                    rating: 4.5,
+                    numberOfReviews: 50
+                  }} />
                 </div>
               </div>
             </div>

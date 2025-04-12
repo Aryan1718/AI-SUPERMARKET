@@ -3,9 +3,22 @@
 import Navbar from './components/Navbar'
 import DealsSection from './components/DealsSection'
 import SalesSection from './components/SalesSection'
+import Link from 'next/link';
 import NewItemsSection from './components/NewItemsSection'
+import SlidingCart from './components/SlidingCart';
+import { useState, useEffect } from 'react';
+import { useCart } from '@/context/CartContext';
 
 export default function Home() {
+  const [isCartOpen, setIsCartOpen] = useState(false);
+  const { cart } = useCart();
+
+  useEffect(() => {
+    if (cart.length > 0) {
+      setIsCartOpen(true);
+    }
+  }, [cart.length]);
+
   return (
     <main className="min-h-screen bg-gray-50">
       <Navbar />
@@ -20,9 +33,9 @@ export default function Home() {
             <p className="text-xl mb-8">
               Your one-stop shop for fresh groceries and amazing deals
             </p>
-            <button className="bg-white text-green-600 px-8 py-3 rounded-md text-lg font-semibold hover:bg-gray-100 transition-colors">
+            <Link href="/products"><button className="bg-white text-green-600 px-8 py-3 rounded-md text-lg font-semibold hover:bg-gray-100 transition-colors">
               Start Shopping
-            </button>
+            </button></Link>
           </div>
         </div>
       </section>
@@ -31,6 +44,12 @@ export default function Home() {
       <DealsSection />
       <SalesSection />
       <NewItemsSection />
+
+      {/* Sliding Cart */}
+      <SlidingCart 
+        isOpen={isCartOpen} 
+        onClose={() => setIsCartOpen(false)} 
+      />
 
       {/* Footer */}
       <footer className="bg-gray-800 text-white py-12">

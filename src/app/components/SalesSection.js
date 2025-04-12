@@ -1,5 +1,7 @@
 'use client';
 
+import CartButton from './CartButton';
+
 const SalesSection = () => {
   const saleItems = [
     {
@@ -57,9 +59,19 @@ const SalesSection = () => {
                   <span className="text-sm text-gray-500 line-through">{item.originalPrice}</span>
                   <span className="ml-2 text-lg font-bold text-green-600">{item.salePrice}</span>
                 </div>
-                <button className="mt-4 w-full bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 transition-colors">
-                  Add to Cart
-                </button>
+                <div className="mt-4">
+                  <CartButton product={{
+                    _id: item.id,
+                    name: item.name,
+                    price: parseFloat(item.salePrice.replace('$', '')),
+                    image: item.image,
+                    category: item.category,
+                    unit: 'piece',
+                    discount: 0,
+                    rating: 4.5,
+                    numberOfReviews: 100
+                  }} />
+                </div>
               </div>
             </div>
           ))}

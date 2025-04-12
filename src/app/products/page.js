@@ -4,7 +4,9 @@ import { useState, useEffect } from 'react';
 import Navbar from '../components/Navbar';
 import ProductCard from '../components/ProductCard';
 import ProductModal from '../components/ProductModal';
+import SlidingCart from '../components/SlidingCart';
 import { useUser } from '@/context/UserContext';
+import { useCart } from '@/context/CartContext';
 
 const categories = [
   'fruits',
@@ -22,9 +24,13 @@ export default function ProductsPage() {
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [isCartOpen, setIsCartOpen] = useState(false);
   const { user } = useUser();
+  const { cart } = useCart();
 
   useEffect(() => {
+    let isMounted = true;
+
     const fetchProducts = async () => {
       try {
         setLoading(true);
@@ -33,7 +39,6 @@ export default function ProductsPage() {
         
         // Get user preference first
         const userPreference = user?.preference;
-        console.log('User preference:', userPreference);
         
         for (const category of categories) {
           // Skip categories based on user preference
@@ -44,7 +49,6 @@ export default function ProductsPage() {
             continue;
           }
           
-          console.log(`Fetching products for ${category}...`);
           const response = await fetch(`/api/products/category/${category}`);
           
           if (!response.ok) {
@@ -52,21 +56,31 @@ export default function ProductsPage() {
           }
           
           const data = await response.json();
-          console.log(`Received ${data.length} products for ${category}`);
-          productsByCategory[category] = data;
+          if (isMounted) {
+            productsByCategory[category] = data;
+          }
         }
         
-        setProducts(productsByCategory);
+        if (isMounted) {
+          setProducts(productsByCategory);
+        }
       } catch (error) {
-        console.error('Error fetching products:', error);
-        setError(error.message);
+        if (isMounted) {
+          setError(error.message);
+        }
       } finally {
-        setLoading(false);
+        if (isMounted) {
+          setLoading(false);
+        }
       }
     };
 
     fetchProducts();
-  }, [user]); // Add user as dependency to refetch when user changes
+
+    return () => {
+      isMounted = false;
+    };
+  }, [user]);
 
   const handleProductClick = (product) => {
     setSelectedProduct(product);
@@ -75,6 +89,12 @@ export default function ProductsPage() {
   const handleCloseModal = () => {
     setSelectedProduct(null);
   };
+
+  useEffect(() => {
+    if (cart.length > 0) {
+      setIsCartOpen(true);
+    }
+  }, [cart.length]);
 
   if (loading) {
     return (
@@ -116,30 +136,36 @@ export default function ProductsPage() {
           </div>
         )}
         
-        {categories.map((category) => {
-          const categoryProducts = products[category] || [];
-          
-          if (categoryProducts.length === 0) {
-            return null;
-          }
+        {Object.keys(products).length === 0 ? (
+          <div className="text-center py-12">
+            <p className="text-gray-600">No products available at the moment.</p>
+          </div>
+        ) : (
+          categories.map((category) => {
+            const categoryProducts = products[category] || [];
+            
+            if (categoryProducts.length === 0) {
+              return null;
+            }
 
-          return (
-            <section key={category} className="mb-16">
-              <h2 className="text-2xl font-semibold text-gray-900 mb-6 capitalize">
-                {category}
-              </h2>
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                {categoryProducts.map((product) => (
-                  <ProductCard
-                    key={product._id}
-                    product={product}
-                    onClick={() => handleProductClick(product)}
-                  />
-                ))}
-              </div>
-            </section>
-          );
-        })}
+            return (
+              <section key={category} className="mb-16">
+                <h2 className="text-2xl font-semibold text-gray-900 mb-6 capitalize">
+                  {category}
+                </h2>
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                  {categoryProducts.map((product) => (
+                    <ProductCard
+                      key={product._id}
+                      product={product}
+                      onClick={() => handleProductClick(product)}
+                    />
+                  ))}
+                </div>
+              </section>
+            );
+          })
+        )}
       </div>
 
       {selectedProduct && (
@@ -148,6 +174,11 @@ export default function ProductsPage() {
           onClose={handleCloseModal}
         />
       )}
+
+      <SlidingCart 
+        isOpen={isCartOpen} 
+        onClose={() => setIsCartOpen(false)} 
+      />
     </main>
   );
 } 

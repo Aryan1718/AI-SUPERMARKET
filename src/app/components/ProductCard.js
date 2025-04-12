@@ -1,5 +1,7 @@
 'use client';
 
+import CartButton from './CartButton';
+
 const ProductCard = ({ product, onClick }) => {
   const {
     name,
@@ -66,9 +68,7 @@ const ProductCard = ({ product, onClick }) => {
               ${discountedPrice.toFixed(2)}/{unit}
             </span>
           </div>
-          <button className="bg-green-600 text-white px-3 py-1 rounded-md text-sm hover:bg-green-700 transition-colors">
-            Add to Cart
-          </button>
+          <CartButton product={product} />
         </div>
       </div>
     </div>

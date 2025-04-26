@@ -9,7 +9,6 @@ const useImageCache = (imageUrl) => {
       return;
     }
 
-    // Create a new image object to preload
     const img = new Image();
     img.src = imageUrl;
     
@@ -18,7 +17,6 @@ const useImageCache = (imageUrl) => {
     };
 
     img.onerror = () => {
-      console.error('Error loading image:', imageUrl);
       setLoading(false);
     };
   }, [imageUrl]);

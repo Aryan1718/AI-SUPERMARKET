@@ -3,7 +3,7 @@
 import CartButton from './CartButton';
 import CachedImage from '@/components/CachedImage';
 
-const ProductCard = ({ product, onClick }) => {
+const ProductCard = ({ product, onClick, onAddToCart }) => {
   const {
     name,
     price,
@@ -69,7 +69,10 @@ const ProductCard = ({ product, onClick }) => {
               ${discountedPrice.toFixed(2)}/{unit}
             </span>
           </div>
-          <CartButton product={product} />
+          <CartButton 
+            product={product} 
+            onAddToCart={onAddToCart}
+          />
         </div>
       </div>
     </div>

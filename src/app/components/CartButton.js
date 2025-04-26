@@ -3,7 +3,7 @@
 import { useCart } from '@/context/CartContext';
 import { useState } from 'react';
 
-const CartButton = ({ product }) => {
+const CartButton = ({ product, onAddToCart }) => {
   const { addToCart } = useCart();
   const [isAdding, setIsAdding] = useState(false);
 
@@ -15,6 +15,10 @@ const CartButton = ({ product }) => {
     // Reset the adding state after a short delay
     setTimeout(() => {
       setIsAdding(false);
+      // Notify parent component to open cart
+      if (onAddToCart) {
+        onAddToCart();
+      }
     }, 500);
   };
 

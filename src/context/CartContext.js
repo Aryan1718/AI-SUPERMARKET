@@ -37,6 +37,10 @@ export function CartProvider({ children }) {
     );
   };
 
+  const clearCart = () => {
+    setCart([]);
+  };
+
   const getCartTotal = () => {
     return cart.reduce((total, item) => {
       const price = item.discount > 0 
@@ -53,6 +57,7 @@ export function CartProvider({ children }) {
         addToCart,
         removeFromCart,
         updateQuantity,
+        clearCart,
         getCartTotal,
       }}
     >

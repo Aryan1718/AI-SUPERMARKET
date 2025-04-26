@@ -3,10 +3,12 @@
 import { useState } from 'react';
 import { useCart } from '@/context/CartContext';
 import { useUser } from '@/context/UserContext';
+import { useRouter } from 'next/navigation';
 
 const CheckoutForm = () => {
-  const { cart, getCartTotal } = useCart();
+  const { cart, getCartTotal, clearCart } = useCart();
   const { user } = useUser();
+  const router = useRouter();
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState({
     // Shipping Information
@@ -28,6 +30,7 @@ const CheckoutForm = () => {
   });
   const [isProcessing, setIsProcessing] = useState(false);
   const [orderComplete, setOrderComplete] = useState(false);
+  const [error, setError] = useState(null);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -48,17 +51,44 @@ const CheckoutForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsProcessing(true);
+    setError(null);
 
-    // Simulate order processing
-    setTimeout(() => {
-      setIsProcessing(false);
+    try {
+      // Process the order and update stock
+      const response = await fetch('/api/orders', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          items: cart.map(item => ({
+            _id: item._id,
+            quantity: item.quantity
+          }))
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || 'Failed to process order');
+      }
+
+      // Clear the cart after successful order
+      clearCart();
+      
+      // Set order as complete
       setOrderComplete(true);
+      
       // Here you would typically:
-      // 1. Send order to your backend
-      // 2. Process payment
-      // 3. Clear cart
-      // 4. Send confirmation email
-    }, 2000);
+      // 1. Send confirmation email
+      // 2. Store order details in database
+    } catch (error) {
+      console.error('Error processing order:', error);
+      setError(error.message || 'Failed to process order. Please try again.');
+    } finally {
+      setIsProcessing(false);
+    }
   };
 
   if (orderComplete) {
@@ -71,13 +101,25 @@ const CheckoutForm = () => {
         </div>
         <h2 className="text-2xl font-bold text-gray-900 mb-2">Order Confirmed!</h2>
         <p className="text-gray-600 mb-4">Thank you for your purchase. Your order has been received.</p>
-        <p className="text-sm text-gray-500">Order confirmation has been sent to {formData.email}</p>
+        <p className="text-sm text-gray-500 mb-6">Order confirmation has been sent to {formData.email}</p>
+        <button
+          onClick={() => router.push('/products')}
+          className="bg-green-600 text-white px-6 py-2 rounded-md hover:bg-green-700 transition-colors"
+        >
+          Continue Shopping
+        </button>
       </div>
     );
   }
 
   return (
     <div className="bg-white rounded-lg shadow-md p-6">
+      {error && (
+        <div className="mb-4 p-4 bg-red-50 border border-red-200 rounded-md">
+          <p className="text-red-600">{error}</p>
+        </div>
+      )}
+
       {/* Progress Steps */}
       <div className="mb-8">
         <div className="flex items-center justify-between">

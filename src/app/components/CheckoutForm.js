@@ -54,7 +54,7 @@ const CheckoutForm = () => {
     setError(null);
 
     try {
-      // Process the order and update stock
+      // Process the order
       const response = await fetch('/api/orders', {
         method: 'POST',
         headers: {
@@ -80,9 +80,10 @@ const CheckoutForm = () => {
       // Set order as complete
       setOrderComplete(true);
       
-      // Here you would typically:
-      // 1. Send confirmation email
-      // 2. Store order details in database
+      // Redirect to success page after a delay
+      setTimeout(() => {
+        router.push('/order-success');
+      }, 2000);
     } catch (error) {
       console.error('Error processing order:', error);
       setError(error.message || 'Failed to process order. Please try again.');

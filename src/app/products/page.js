@@ -35,20 +35,34 @@ export default function ProductsPage() {
       try {
         setLoading(true);
         setError(null);
+        const productsByCategory = {};
         
-        // Get user preference
-        const userPreference = user?.preference || '';
+        // Get user preference first
+        const userPreference = user?.preference;
         
-        // Single API call with user preference
-        const response = await fetch(`/api/products/all?preference=${userPreference}`);
-        
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
+        for (const category of categories) {
+          // Skip categories based on user preference
+          if (userPreference === 'veg' && category === 'meat') {
+            continue;
+          }
+          if (userPreference === 'vegan' && (category === 'meat' || category === 'dairy')) {
+            continue;
+          }
+          
+          const response = await fetch(`/api/products/category/${category}`);
+          
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          
+          const data = await response.json();
+          if (isMounted) {
+            productsByCategory[category] = data;
+          }
         }
         
-        const data = await response.json();
         if (isMounted) {
-          setProducts(data);
+          setProducts(productsByCategory);
         }
       } catch (error) {
         if (isMounted) {
@@ -76,11 +90,9 @@ export default function ProductsPage() {
     setSelectedProduct(null);
   };
 
-  useEffect(() => {
-    if (cart.length > 0) {
-      setIsCartOpen(true);
-    }
-  }, [cart.length]);
+  const handleAddToCart = () => {
+    setIsCartOpen(true);
+  };
 
   if (loading) {
     return (
@@ -145,6 +157,7 @@ export default function ProductsPage() {
                       key={product._id}
                       product={product}
                       onClick={() => handleProductClick(product)}
+                      onAddToCart={handleAddToCart}
                     />
                   ))}
                 </div>

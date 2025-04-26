@@ -1,6 +1,7 @@
 'use client';
 
 import CartButton from './CartButton';
+import CachedImage from '@/components/CachedImage';
 
 const NewItemsSection = () => {
   const newItems = [
@@ -8,7 +9,7 @@ const NewItemsSection = () => {
       id: 1,
       name: "Organic Avocados",
       price: "$3.99",
-      image: "https://images.unsplash.com/photo-1581674210509-d6b7acdea3e6?w=800&auto=format&fit=crop&q=60",
+      image: "https://images.unsplash.com/photo-1581674210509-d6b7acdea3e6?w=800&auto=format&fit=crop&q=80&fm=webp&dpr=2",
       category: "Produce",
       description: "Fresh organic avocados from California"
     },
@@ -16,7 +17,7 @@ const NewItemsSection = () => {
       id: 2,
       name: "Almond Milk",
       price: "$4.49",
-      image: "https://images.unsplash.com/photo-1550583724-b2692b85b150?w=800&auto=format&fit=crop&q=60",
+      image: "https://images.unsplash.com/photo-1550583724-b2692b85b150?w=800&auto=format&fit=crop&q=80&fm=webp&dpr=2",
       category: "Dairy",
       description: "Creamy almond milk, perfect for smoothies"
     },
@@ -24,7 +25,7 @@ const NewItemsSection = () => {
       id: 3,
       name: "Quinoa",
       price: "$5.99",
-      image: "https://images.unsplash.com/photo-1512058564366-18510be2db19?w=800&auto=format&fit=crop&q=60",
+      image: "https://images.unsplash.com/photo-1512058564366-18510be2db19?w=800&auto=format&fit=crop&q=80&fm=webp&dpr=2",
       category: "Grains",
       description: "High-protein ancient grain"
     }
@@ -38,7 +39,7 @@ const NewItemsSection = () => {
           {newItems.map((item) => (
             <div key={item.id} className="bg-white rounded-lg shadow-md overflow-hidden border border-blue-100">
               <div className="relative">
-                <img 
+                <CachedImage 
                   src={item.image} 
                   alt={item.name}
                   className="w-full h-48 object-cover"

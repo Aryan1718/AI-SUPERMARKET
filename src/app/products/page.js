@@ -35,34 +35,20 @@ export default function ProductsPage() {
       try {
         setLoading(true);
         setError(null);
-        const productsByCategory = {};
         
-        // Get user preference first
-        const userPreference = user?.preference;
+        // Get user preference
+        const userPreference = user?.preference || '';
         
-        for (const category of categories) {
-          // Skip categories based on user preference
-          if (userPreference === 'veg' && category === 'meat') {
-            continue;
-          }
-          if (userPreference === 'vegan' && (category === 'meat' || category === 'dairy')) {
-            continue;
-          }
-          
-          const response = await fetch(`/api/products/category/${category}`);
-          
-          if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-          }
-          
-          const data = await response.json();
-          if (isMounted) {
-            productsByCategory[category] = data;
-          }
+        // Single API call with user preference
+        const response = await fetch(`/api/products/all?preference=${userPreference}`);
+        
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
         }
         
+        const data = await response.json();
         if (isMounted) {
-          setProducts(productsByCategory);
+          setProducts(data);
         }
       } catch (error) {
         if (isMounted) {

@@ -1,6 +1,7 @@
 'use client';
 
 import Navbar from '../components/Navbar';
+import CachedImage from '@/components/CachedImage';
 
 export default function AboutUs() {
   return (
@@ -33,8 +34,8 @@ export default function AboutUs() {
               </p>
             </div>
             <div className="relative">
-              <img 
-                src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=800&auto=format&fit=crop&q=60"
+              <CachedImage 
+                src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=800&auto=format&fit=crop&q=80&fm=webp&dpr=2"
                 alt="Our Store"
                 className="rounded-lg shadow-xl"
               />

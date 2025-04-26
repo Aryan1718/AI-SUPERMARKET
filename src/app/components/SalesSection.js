@@ -1,6 +1,7 @@
 'use client';
 
 import CartButton from './CartButton';
+import CachedImage from '@/components/CachedImage';
 
 const SalesSection = () => {
   const saleItems = [
@@ -9,7 +10,7 @@ const SalesSection = () => {
       name: "Organic Bananas",
       originalPrice: "$2.99",
       salePrice: "$1.99",
-      image: "https://images.unsplash.com/photo-1543218024-57a70143c369?w=800&auto=format&fit=crop&q=60",
+      image: "https://images.unsplash.com/photo-1543218024-57a70143c369?w=800&auto=format&fit=crop&q=80&fm=webp&dpr=2",
       category: "Produce"
     },
     {
@@ -17,7 +18,7 @@ const SalesSection = () => {
       name: "Whole Grain Bread",
       originalPrice: "$4.99",
       salePrice: "$3.49",
-      image: "https://images.unsplash.com/photo-1509440159596-0249088772ff?w=800&auto=format&fit=crop&q=60",
+      image: "https://images.unsplash.com/photo-1509440159596-0249088772ff?w=800&auto=format&fit=crop&q=80&fm=webp&dpr=2",
       category: "Bakery"
     },
     {
@@ -25,7 +26,7 @@ const SalesSection = () => {
       name: "Greek Yogurt",
       originalPrice: "$5.99",
       salePrice: "$4.49",
-      image: "https://images.unsplash.com/photo-1550581190-9c1c48d21d6c?w=800&auto=format&fit=crop&q=60",
+      image: "https://images.unsplash.com/photo-1550581190-9c1c48d21d6c?w=800&auto=format&fit=crop&q=80&fm=webp&dpr=2",
       category: "Dairy"
     },
     {
@@ -33,7 +34,7 @@ const SalesSection = () => {
       name: "Fresh Spinach",
       originalPrice: "$3.99",
       salePrice: "$2.99",
-      image: "https://images.unsplash.com/photo-1576045057995-568f588f82fb?w=800&auto=format&fit=crop&q=60",
+      image: "https://images.unsplash.com/photo-1576045057995-568f588f82fb?w=800&auto=format&fit=crop&q=80&fm=webp&dpr=2",
       category: "Produce"
     }
   ];
@@ -46,7 +47,7 @@ const SalesSection = () => {
           {saleItems.map((item) => (
             <div key={item.id} className="bg-white rounded-lg shadow-md overflow-hidden">
               <div className="aspect-w-1 aspect-h-1">
-                <img 
+                <CachedImage 
                   src={item.image} 
                   alt={item.name}
                   className="w-full h-48 object-cover"

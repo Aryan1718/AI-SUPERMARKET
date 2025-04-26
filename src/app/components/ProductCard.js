@@ -1,6 +1,7 @@
 'use client';
 
 import CartButton from './CartButton';
+import CachedImage from '@/components/CachedImage';
 
 const ProductCard = ({ product, onClick }) => {
   const {
@@ -23,7 +24,7 @@ const ProductCard = ({ product, onClick }) => {
       onClick={onClick}
     >
       <div className="relative">
-        <img 
+        <CachedImage 
           src={image} 
           alt={name}
           className="w-full h-48 object-cover"

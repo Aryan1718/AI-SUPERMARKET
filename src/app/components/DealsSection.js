@@ -1,12 +1,14 @@
 'use client';
 
+import CachedImage from '@/components/CachedImage';
+
 const DealsSection = () => {
   const deals = [
     {
       id: 1,
       title: "Weekend Special",
       description: "Get 20% off on all fresh produce",
-      image: "https://images.unsplash.com/photo-1610832958506-aa56368176cf?w=800&auto=format&fit=crop&q=60",
+      image: "https://images.unsplash.com/photo-1610832958506-aa56368176cf?w=800&auto=format&fit=crop&q=80&fm=webp&dpr=2",
       discount: "20% OFF",
       validUntil: "This Weekend"
     },
@@ -14,7 +16,7 @@ const DealsSection = () => {
       id: 2,
       title: "Bulk Savings",
       description: "Buy in bulk and save up to 30%",
-      image: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=800&auto=format&fit=crop&q=60",
+      image: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=800&auto=format&fit=crop&q=80&fm=webp&dpr=2",
       discount: "30% OFF",
       validUntil: "Limited Time"
     }
@@ -31,7 +33,7 @@ const DealsSection = () => {
                 {deal.discount}
               </div>
               <div className="aspect-w-16 aspect-h-9">
-                <img 
+                <CachedImage 
                   src={deal.image} 
                   alt={deal.title}
                   className="w-full h-48 object-cover"

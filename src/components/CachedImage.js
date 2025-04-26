@@ -17,7 +17,7 @@ const CachedImage = ({ src, alt, className, ...props }) => {
         }
       },
       {
-        rootMargin: '100px', // Start loading when image is 100px from viewport
+        rootMargin: '100px',
         threshold: 0.1
       }
     );
@@ -41,7 +41,7 @@ const CachedImage = ({ src, alt, className, ...props }) => {
     >
       {shouldLoad ? (
         <img
-          src={loading ? '/placeholder.png' : cachedImage}
+          src={cachedImage}
           alt={alt}
           className={`${className} absolute inset-0 w-full h-full object-cover transition-opacity duration-300 ${
             loading ? 'opacity-0' : 'opacity-100'

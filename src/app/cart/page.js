@@ -1,16 +1,25 @@
 'use client';
 
 import { useCart } from '@/context/CartContext';
+import { useUser } from '@/context/UserContext';
 import Link from 'next/link';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 export default function CartPage() {
   const { cart, removeFromCart, updateQuantity, getCartTotal } = useCart();
+  const { user } = useUser();
   const [isCheckingOut, setIsCheckingOut] = useState(false);
   const router = useRouter();
 
   const handleCheckout = () => {
+    if (!user) {
+      // Store the current URL to redirect back after login
+      sessionStorage.setItem('redirectAfterLogin', '/checkout');
+      router.push('/login');
+      return;
+    }
+    
     setIsCheckingOut(true);
     router.push('/checkout');
   };
@@ -159,6 +168,13 @@ export default function CartPage() {
                 </div>
               </div>
               <div className="mt-6">
+                {!user && (
+                  <div className="mb-4 p-4 bg-yellow-50 border border-yellow-200 rounded-md">
+                    <p className="text-yellow-700 text-sm">
+                      Please sign in to complete your purchase.
+                    </p>
+                  </div>
+                )}
                 <button
                   onClick={handleCheckout}
                   disabled={isCheckingOut}
@@ -175,7 +191,7 @@ export default function CartPage() {
                       Processing...
                     </span>
                   ) : (
-                    'Checkout'
+                    user ? 'Checkout' : 'Sign in to Checkout'
                   )}
                 </button>
               </div>

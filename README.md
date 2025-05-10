@@ -24,7 +24,7 @@ A modern e-commerce platform built with Next.js that combines traditional shoppi
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/yourusername/ai-supermarket.git
+git clone https://github.com/Aryan1718/ai-supermarket.git
 cd ai-supermarket
 ```
 
@@ -98,4 +98,4 @@ Contributions, issues, and feature requests are welcome! Feel free to check the 
 
 ## 📫 Contact
 
-Project Link: [https://github.com/yourusername/ai-supermarket](https://github.com/yourusername/ai-supermarket)
+Project Link: [https://github.com/Aryan1718/ai-supermarket](https://github.com/Aryan1718/ai-supermarket)

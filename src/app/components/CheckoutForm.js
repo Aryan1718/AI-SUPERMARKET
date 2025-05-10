@@ -41,6 +41,28 @@ const CheckoutForm = () => {
   };
 
   const handleNext = () => {
+    // Validate current step fields
+    if (step === 1) {
+      // Validate shipping information
+      const requiredFields = ['firstName', 'lastName', 'email', 'phone', 'address', 'city', 'state', 'zipCode'];
+      const missingFields = requiredFields.filter(field => !formData[field]);
+      
+      if (missingFields.length > 0) {
+        setError(`Please fill in all required fields: ${missingFields.join(', ')}`);
+        return;
+      }
+    } else if (step === 2) {
+      // Validate payment information
+      const requiredFields = ['cardNumber', 'cardName', 'expiryDate', 'cvv'];
+      const missingFields = requiredFields.filter(field => !formData[field]);
+      
+      if (missingFields.length > 0) {
+        setError(`Please fill in all required fields: ${missingFields.join(', ')}`);
+        return;
+      }
+    }
+    
+    setError(null);
     setStep(prev => prev + 1);
   };
 

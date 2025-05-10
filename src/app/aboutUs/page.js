@@ -2,6 +2,7 @@
 
 import Navbar from '../components/Navbar';
 import CachedImage from '@/components/CachedImage';
+import Footer from '../components/Footer';
 
 export default function AboutUs() {
   return (
@@ -97,6 +98,8 @@ export default function AboutUs() {
           </div>
         </div>
       </section>
+
+      <Footer />
     </main>
   );
 } 

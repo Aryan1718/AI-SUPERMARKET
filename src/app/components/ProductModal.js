@@ -1,11 +1,13 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useCart } from '@/context/CartContext';
 
 const ProductModal = ({ product, onClose }) => {
   const [quantity, setQuantity] = useState(1);
   const [fact, setFact] = useState('');
   const [isLoadingFact, setIsLoadingFact] = useState(false);
+  const { addToCart } = useCart();
   
   const {
     name,
@@ -54,8 +56,8 @@ const ProductModal = ({ product, onClose }) => {
   }, [name]);
 
   const handleAddToCart = () => {
-    // Implement add to cart functionality
-    console.log('Adding to cart:', { product, quantity });
+    // Add the product to cart with the selected quantity
+    addToCart({ ...product, quantity });
     onClose();
   };
 
@@ -153,7 +155,7 @@ const ProductModal = ({ product, onClose }) => {
                 min="1"
                 max={stock}
                 value={quantity}
-                onChange={(e) => setQuantity(Math.min(Math.max(1, parseInt(e.target.value)), stock))}
+                onChange={(e) => setQuantity(Math.min(Math.max(1, parseInt(e.target.value) || 1), stock))}
                 className="w-20 px-3 py-1 border rounded-md"
               />
             </div>

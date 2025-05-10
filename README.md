@@ -98,6 +98,4 @@ Contributions, issues, and feature requests are welcome! Feel free to check the 
 
 ## 📫 Contact
 
-Your Name - [@yourtwitter](https://twitter.com/yourtwitter)
-
 Project Link: [https://github.com/yourusername/ai-supermarket](https://github.com/yourusername/ai-supermarket)

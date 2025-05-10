@@ -34,9 +34,114 @@ const CheckoutForm = () => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
+    let processedValue = value;
+
+    // Name validation (firstName and lastName)
+    if (name === 'firstName' || name === 'lastName') {
+      // Remove all numbers and special characters, keep only letters, spaces, and hyphens
+      processedValue = value.replace(/[^a-zA-Z\s-]/g, '');
+      // Remove any multiple spaces
+      processedValue = processedValue.replace(/\s+/g, ' ').trim();
+      // Capitalize first letter of each word
+      processedValue = processedValue.split(' ')
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+        .join(' ');
+    }
+
+    // Email validation
+    if (name === 'email') {
+      // Convert to lowercase and remove spaces
+      processedValue = value.toLowerCase().trim();
+    }
+
+    // Phone number validation - only allow numbers and limit to 10 digits
+    if (name === 'phone') {
+      processedValue = value.replace(/\D/g, '').slice(0, 10);
+    }
+    
+    // Address validation
+    if (name === 'address') {
+      // Allow letters, numbers, spaces, and common address characters
+      processedValue = value.replace(/[^a-zA-Z0-9\s.,#-]/g, '');
+      // Capitalize first letter of each word
+      processedValue = processedValue.split(' ')
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+        .join(' ');
+    }
+
+    // City validation
+    if (name === 'city') {
+      // Only allow letters, spaces, and hyphens
+      processedValue = value.replace(/[^a-zA-Z\s-]/g, '');
+      // Capitalize first letter of each word
+      processedValue = processedValue.split(' ')
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+        .join(' ');
+    }
+
+    // State validation
+    if (name === 'state') {
+      // Only allow letters and spaces
+      processedValue = value.replace(/[^a-zA-Z\s]/g, '');
+      // Capitalize first letter of each word
+      processedValue = processedValue.split(' ')
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+        .join(' ');
+    }
+
+    // ZIP Code validation
+    if (name === 'zipCode') {
+      // Only allow numbers and limit to 5 digits
+      processedValue = value.replace(/\D/g, '').slice(0, 5);
+    }
+    
+    // Card number validation - only allow numbers and limit to 16 digits
+    if (name === 'cardNumber') {
+      processedValue = value.replace(/\D/g, '').slice(0, 16);
+      // Add space after every 4 digits
+      processedValue = processedValue.replace(/(\d{4})(?=\d)/g, '$1 ').trim();
+    }
+    
+    // Card name validation
+    if (name === 'cardName') {
+      // Only allow letters, spaces, and hyphens
+      processedValue = value.replace(/[^a-zA-Z\s-]/g, '');
+      // Capitalize first letter of each word
+      processedValue = processedValue.split(' ')
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+        .join(' ');
+    }
+    
+    // CVV validation - only allow numbers and limit to 3 digits
+    if (name === 'cvv') {
+      processedValue = value.replace(/\D/g, '').slice(0, 3);
+    }
+    
+    // Expiry date validation - format as MM/YY
+    if (name === 'expiryDate') {
+      // Remove any non-digit characters
+      let digits = value.replace(/\D/g, '');
+      
+      // Format as MM/YY
+      if (digits.length >= 2) {
+        let month = parseInt(digits.slice(0, 2));
+        // Ensure month is between 01 and 12
+        month = Math.min(Math.max(month, 1), 12);
+        // Pad with leading zero if needed
+        month = month.toString().padStart(2, '0');
+        processedValue = month;
+        
+        if (digits.length > 2) {
+          processedValue += '/' + digits.slice(2, 4);
+        }
+      } else {
+        processedValue = digits;
+      }
+    }
+
     setFormData(prev => ({
       ...prev,
-      [name]: value
+      [name]: processedValue
     }));
   };
 
@@ -193,6 +298,8 @@ const CheckoutForm = () => {
                   value={formData.firstName}
                   onChange={handleInputChange}
                   required
+                  pattern="[A-Za-z\s-]+"
+                  title="Please enter only letters, spaces, and hyphens"
                   className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500"
                 />
               </div>
@@ -205,6 +312,8 @@ const CheckoutForm = () => {
                   value={formData.lastName}
                   onChange={handleInputChange}
                   required
+                  pattern="[A-Za-z\s-]+"
+                  title="Please enter only letters, spaces, and hyphens"
                   className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500"
                 />
               </div>
@@ -391,6 +500,26 @@ const CheckoutForm = () => {
                 </div>
               </div>
             </div>
+            <div className="mt-6">
+              <button
+                type="button"
+                onClick={handleSubmit}
+                disabled={isProcessing}
+                className="w-full bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 transition-colors disabled:opacity-70 disabled:cursor-not-allowed"
+              >
+                {isProcessing ? (
+                  <span className="flex items-center justify-center">
+                    <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    Processing...
+                  </span>
+                ) : (
+                  'Process Order'
+                )}
+              </button>
+            </div>
           </div>
         )}
 
@@ -405,31 +534,13 @@ const CheckoutForm = () => {
               Back
             </button>
           )}
-          {step < 3 ? (
+          {step < 3 && (
             <button
               type="button"
               onClick={handleNext}
               className="ml-auto bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 transition-colors"
             >
               Next
-            </button>
-          ) : (
-            <button
-              type="submit"
-              disabled={isProcessing}
-              className="ml-auto bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 transition-colors disabled:opacity-70 disabled:cursor-not-allowed"
-            >
-              {isProcessing ? (
-                <span className="flex items-center">
-                  <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                  </svg>
-                  Processing...
-                </span>
-              ) : (
-                'Place Order'
-              )}
             </button>
           )}
         </div>

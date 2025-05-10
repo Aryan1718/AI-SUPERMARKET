@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import Navbar from '../components/Navbar';
+import Footer from '../components/Footer';
 
 export default function Contact() {
   const [formData, setFormData] = useState({
@@ -162,7 +163,7 @@ export default function Contact() {
           <h2 className="text-3xl font-bold text-gray-900 mb-8 text-center">Visit Us</h2>
           <div className="aspect-w-16 aspect-h-9">
             <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d387193.30591910525!2d-74.25986532962815!3d40.697149419999995!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c24fa5d33f083b%3A0xc80b8f06e177fe62!2sNew%20York%2C%20NY!5e0!3m2!1sen!2sus!4v1647891234567!5m2!1sen!2sus"
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d38019.11467890606!2d-117.924634!3d33.88939655!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x80dd2a74c381cb63%3A0xf59c53811e60ea4a!2sFullerton%2C%20CA!5e1!3m2!1sen!2sus!4v1746862267490!5m2!1sen!2sus"
               width="100%"
               height="450"
               style={{ border: 0 }}
@@ -174,6 +175,8 @@ export default function Contact() {
           </div>
         </div>
       </section>
+
+      <Footer />
     </main>
   );
 } 

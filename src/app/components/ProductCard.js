@@ -2,8 +2,10 @@
 
 import CartButton from './CartButton';
 import CachedImage from '@/components/CachedImage';
+import { useCart } from '@/context/CartContext';
 
 const ProductCard = ({ product, onClick, onAddToCart }) => {
+  const { addToCart } = useCart();
   const {
     name,
     price,
@@ -11,12 +13,21 @@ const ProductCard = ({ product, onClick, onAddToCart }) => {
     unit,
     discount,
     rating,
-    numberOfReviews
+    numberOfReviews,
+    subCategory
   } = product;
 
   const discountedPrice = discount > 0 
     ? price * (1 - discount / 100)
     : price;
+
+  const handleAddToCart = (e) => {
+    e.stopPropagation(); // Prevent the product card click event
+    addToCart(product);
+    if (onAddToCart) {
+      onAddToCart();
+    }
+  };
 
   return (
     <div 
@@ -37,6 +48,10 @@ const ProductCard = ({ product, onClick, onAddToCart }) => {
       </div>
       <div className="p-4">
         <h3 className="text-lg font-medium text-gray-900 mb-1">{name}</h3>
+        <div className="mb-2">
+          <span className="text-sm text-gray-500">Sub-category:</span>
+          <span className="ml-2 text-gray-900 capitalize">{subCategory}</span>
+        </div>
         <div className="flex items-center mb-2">
           <div className="flex items-center">
             {[...Array(5)].map((_, i) => (
@@ -70,10 +85,25 @@ const ProductCard = ({ product, onClick, onAddToCart }) => {
               ${discountedPrice.toFixed(2)}/{unit}
             </span>
           </div>
-          <CartButton 
-            product={product} 
-            onAddToCart={onAddToCart}
-          />
+          <button
+            onClick={handleAddToCart}
+            className="bg-green-600 text-white px-3 py-1 rounded-md text-sm hover:bg-green-700 transition-colors flex items-center gap-1"
+          >
+            <svg
+              className="w-4 h-4"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
+              />
+            </svg>
+            Add to Cart
+          </button>
         </div>
       </div>
     </div>

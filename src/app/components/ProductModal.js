@@ -1,9 +1,12 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 const ProductModal = ({ product, onClose }) => {
   const [quantity, setQuantity] = useState(1);
+  const [fact, setFact] = useState('');
+  const [isLoadingFact, setIsLoadingFact] = useState(false);
+  
   const {
     name,
     description,
@@ -22,6 +25,34 @@ const ProductModal = ({ product, onClose }) => {
     ? price * (1 - discount / 100)
     : price;
 
+  useEffect(() => {
+    const fetchFact = async () => {
+      try {
+        setIsLoadingFact(true);
+        const response = await fetch('/api/ai/fact', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ productName: name }),
+        });
+
+        if (!response.ok) {
+          throw new Error('Failed to fetch fact');
+        }
+
+        const data = await response.json();
+        setFact(data.fact);
+      } catch (error) {
+        console.error('Error fetching fact:', error);
+      } finally {
+        setIsLoadingFact(false);
+      }
+    };
+
+    fetchFact();
+  }, [name]);
+
   const handleAddToCart = () => {
     // Implement add to cart functionality
     console.log('Adding to cart:', { product, quantity });
@@ -39,6 +70,7 @@ const ProductModal = ({ product, onClose }) => {
               className="w-full h-96 object-cover"
             />
           </div>
+          
           <div className="md:w-1/2 p-6">
             <div className="flex justify-between items-start mb-4">
               <h2 className="text-2xl font-bold text-gray-900">{name}</h2>
@@ -75,6 +107,18 @@ const ProductModal = ({ product, onClose }) => {
             </div>
 
             <p className="text-gray-600 mb-4">{description}</p>
+
+            {/* Random Fact Section */}
+            <div className="mb-4 p-4 bg-gray-50 rounded-lg">
+              <h3 className="text-sm font-semibold text-gray-700 mb-2">Did you know?</h3>
+              {isLoadingFact ? (
+                <div className="animate-pulse h-4 bg-gray-200 rounded w-3/4"></div>
+              ) : fact ? (
+                <p className="text-sm text-gray-600 italic">"{fact}"</p>
+              ) : (
+                <p className="text-sm text-gray-500">Loading interesting fact...</p>
+              )}
+            </div>
 
             <div className="mb-4">
               <span className="text-sm text-gray-500">Category:</span>

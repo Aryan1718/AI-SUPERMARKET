@@ -58,6 +58,7 @@ const ProductCard = ({ product, onClick, onAddToCart }) => {
             ({numberOfReviews})
           </span>
         </div>
+
         <div className="flex items-center justify-between">
           <div>
             {discount > 0 && (

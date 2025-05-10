@@ -14,13 +14,21 @@ export default function CheckoutPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    // Check if user is authenticated
+    if (!user) {
+      // Store the current URL to redirect back after login
+      sessionStorage.setItem('redirectAfterLogin', '/checkout');
+      router.push('/login');
+      return;
+    }
+
     // Check if cart is empty
     if (cart.length === 0) {
       router.push('/products');
     } else {
       setLoading(false);
     }
-  }, [cart, router]);
+  }, [cart, router, user]);
 
   if (loading) {
     return (
